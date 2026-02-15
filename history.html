@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KìñgFX History</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">Kì</div>
+      <div>
+        <div class="title">KìñgFX Trade History</div>
+        <div class="subtitle">View trades + preview images</div>
+      </div>
+    </div>
+
+    <!-- TASKBAR / NAV -->
+    <nav class="nav">
+      <a class="navlink" href="index.html">Journal</a>
+      <a class="navlink active" href="history.html">History</a>
+      <button id="refreshBtn" class="btn btn-ghost">Refresh</button>
+    </nav>
+  </header>
+
+  <main class="container onecol">
+    <section class="card">
+      <div class="historyHeader">
+        <h2>Trade History</h2>
+        <div class="muted">Click an image to preview</div>
+      </div>
+
+      <div id="historyContainer" class="history"></div>
+    </section>
+  </main>
+
+  <!-- IMAGE PREVIEW MODAL -->
+  <div id="imgModal" class="modal">
+    <div class="modalPanel">
+      <div class="modalTop">
+        <div class="modalTitle" id="modalTitle">Preview</div>
+        <button id="closeModalBtn" class="btn btn-ghost">Close</button>
+      </div>
+      <img id="modalImg" alt="Preview" />
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="history.js"></script>
+</body>
+</html>
