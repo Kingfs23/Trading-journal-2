@@ -1,7 +1,7 @@
-const supabaseUrl = "https://nfmnbwyluttivkgplmrh.supabase.co";
-const supabaseKey = "sb_publishable_fEGUHINYAMku5Bl_N3ebTA_vZcqV_j3";
+const SUPABASE_URL = "https://nfmnbwyluttivkgplmrh.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_fEGUHINYAMku5Bl_N3ebTA_vZcqV_j3";
 
-const supabase = window.supabase.createClient(
-  supabaseUrl,
-  supabaseKey
-);
+// Create client and store it in a different variable name (NOT "supabase")
+window.sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+
