@@ -4,7 +4,7 @@ const historyContainer = document.getElementById("historyContainer");
 async function uploadImage(file) {
   const fileName = `${Date.now()}-${file.name}`;
 
-  const { error } = await supabase.storage
+  const { error } = await sb.storage
     .from("trade-images")
     .upload(fileName, file);
 
@@ -13,7 +13,7 @@ async function uploadImage(file) {
     return null;
   }
 
-  const { data } = supabase.storage
+  const { data } = sb.storage
     .from("trade-images")
     .getPublicUrl(fileName);
 
@@ -37,7 +37,7 @@ form.addEventListener("submit", async (e) => {
     afterUrl = await uploadImage(afterFile);
   }
 
-  const { error } = await supabase
+  const { error } = await sb
     .from("trades")
     .insert([
       {
@@ -60,7 +60,7 @@ form.addEventListener("submit", async (e) => {
 });
 
 async function loadTrades() {
-  const { data, error } = await supabase
+  const { data, error } = await sb
     .from("trades")
     .select("*")
     .order("created_at", { ascending: false });
@@ -91,4 +91,5 @@ async function loadTrades() {
 }
 
 loadTrades();
+
 
