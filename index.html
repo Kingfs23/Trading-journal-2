@@ -16,11 +16,16 @@
         <div class="subtitle">Supabase (Database + Storage)</div>
       </div>
     </div>
-    <button id="scrollToFormBtn" class="btn btn-primary">Add Trade</button>
+
+    <!-- TASKBAR / NAV -->
+    <nav class="nav">
+      <a class="navlink active" href="index.html">Journal</a>
+      <a class="navlink" href="history.html">History</a>
+      <button id="scrollToFormBtn" class="btn btn-primary">Add Trade</button>
+    </nav>
   </header>
 
-  <main class="container">
-    <!-- FORM -->
+  <main class="container onecol">
     <section class="card" id="formCard">
       <h2>Add New Trade</h2>
 
@@ -68,27 +73,15 @@
         <div class="actions">
           <button type="submit" class="btn btn-primary" id="saveBtn">Save Trade</button>
           <button type="button" class="btn btn-ghost" id="resetBtn">Reset</button>
+          <a class="btn btn-ghost" href="history.html">Go to History</a>
         </div>
 
         <div id="status" class="status"></div>
       </form>
     </section>
-
-    <!-- HISTORY -->
-    <section class="card">
-      <div class="historyHeader">
-        <h2>Trade History</h2>
-        <button id="refreshBtn" class="btn btn-ghost">Refresh</button>
-      </div>
-
-      <div id="historyContainer" class="history"></div>
-    </section>
   </main>
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- Your JS -->
   <script src="supabase.js"></script>
   <script src="journal.js"></script>
 </body>
