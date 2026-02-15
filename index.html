@@ -1,71 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KìñgFX Trading Journal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header>
-  <div class="logo">KìñgFX</div>
-  <h1>Trading Journal</h1>
-</header>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">Kì</div>
+      <div>
+        <div class="title">KìñgFX Trading Journal</div>
+        <div class="subtitle">Supabase (Database + Storage)</div>
+      </div>
+    </div>
+    <button id="scrollToFormBtn" class="btn btn-primary">Add Trade</button>
+  </header>
 
-<main>
+  <main class="container">
+    <!-- FORM -->
+    <section class="card" id="formCard">
+      <h2>Add New Trade</h2>
 
-  <!-- TRADE FORM -->
-  <section class="card">
-    <h2>Add New Trade</h2>
+      <form id="tradeForm" class="form">
+        <div class="row">
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" type="date" required />
+          </div>
+          <div class="field">
+            <label for="pair">Pair</label>
+            <input id="pair" type="text" placeholder="XAUUSD / EURUSD" required />
+          </div>
+        </div>
 
-    <form id="tradeForm">
+        <div class="row">
+          <div class="field">
+            <label for="risk">Risk ($)</label>
+            <input id="risk" type="number" step="0.01" min="0" placeholder="10" required />
+          </div>
+          <div class="field">
+            <label for="notes">Notes (optional)</label>
+            <input id="notes" type="text" placeholder="Setup, emotions, mistakes..." />
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label>Date</label>
-        <input type="date" id="date" required>
+        <div class="row">
+          <div class="field">
+            <label for="beforeImg">Before Image</label>
+            <input id="beforeImg" type="file" accept="image/*" />
+            <div id="beforePreview" class="previewBox">
+              <span class="muted">No image selected</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="afterImg">After Image</label>
+            <input id="afterImg" type="file" accept="image/*" />
+            <div id="afterPreview" class="previewBox">
+              <span class="muted">No image selected</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="saveBtn">Save Trade</button>
+          <button type="button" class="btn btn-ghost" id="resetBtn">Reset</button>
+        </div>
+
+        <div id="status" class="status"></div>
+      </form>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="card">
+      <div class="historyHeader">
+        <h2>Trade History</h2>
+        <button id="refreshBtn" class="btn btn-ghost">Refresh</button>
       </div>
 
-      <div class="form-group">
-        <label>Pair</label>
-        <input type="text" id="pair" placeholder="EUR/USD" required>
-      </div>
+      <div id="historyContainer" class="history"></div>
+    </section>
+  </main>
 
-      <div class="form-group">
-        <label>Risk ($)</label>
-        <input type="number" id="risk" placeholder="10" required>
-      </div>
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-      <div class="form-group">
-        <label>Before Image</label>
-        <input type="file" id="beforeImg" accept="image/*">
-        <div id="beforePreview" class="image-preview"></div>
-      </div>
-
-      <div class="form-group">
-        <label>After Image</label>
-        <input type="file" id="afterImg" accept="image/*">
-        <div id="afterPreview" class="image-preview"></div>
-      </div>
-
-      <button type="submit" class="btn-primary">Save Trade</button>
-
-    </form>
-  </section>
-
-  <!-- HISTORY -->
-  <section class="card">
-    <h2>Trade History</h2>
-    <div id="historyContainer"></div>
-  </section>
-
-</main>
-
-<!-- Supabase CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-<script src="journal.js"></script>
-
+  <!-- Your JS -->
+  <script src="supabase.js"></script>
+  <script src="journal.js"></script>
 </body>
 </html>
+
+
