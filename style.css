@@ -263,6 +263,42 @@ input:focus{
   background:#000;
 }
 
+.imgGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+  margin-top:10px;
+}
+
+.imgBox{
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:10px;
+  background:#0b0b0b;
+}
+
+.imgLabel{
+  font-size:13px;
+  color: var(--muted);
+  margin-bottom:8px;
+  font-weight:700;
+}
+
+.thumb{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:#000;
+}
+
+@media(max-width: 950px){
+  .imgGrid{ grid-template-columns: 1fr; }
+  .thumb{ height:260px; }
+}
+
+
 
 
 
