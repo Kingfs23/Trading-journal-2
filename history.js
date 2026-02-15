@@ -1,5 +1,3 @@
-// ===== History Page Only =====
-
 const historyContainer = document.getElementById("historyContainer");
 const refreshBtn = document.getElementById("refreshBtn");
 
@@ -18,20 +16,18 @@ function escapeHtml(str) {
 }
 
 function openModal(title, url) {
-  if (!modal || !modalImg) return;
   modalTitle.textContent = title || "Preview";
   modalImg.src = url;
   modal.classList.add("open");
 }
 
 function closeModal() {
-  if (!modal || !modalImg) return;
   modal.classList.remove("open");
   modalImg.src = "";
 }
 
-closeModalBtn?.addEventListener("click", closeModal);
-modal?.addEventListener("click", (e) => {
+closeModalBtn.addEventListener("click", closeModal);
+modal.addEventListener("click", (e) => {
   if (e.target === modal) closeModal();
 });
 
@@ -45,12 +41,12 @@ async function loadTrades() {
 
   if (error) {
     console.error(error);
-    historyContainer.innerHTML = `<div class="muted">Failed to load history.</div>`;
+    historyContainer.innerHTML = `<div class="muted">Failed to load trades.</div>`;
     return;
   }
 
   if (!data || data.length === 0) {
-    historyContainer.innerHTML = `<div class="muted">No trades yet. Go to Journal and add one.</div>`;
+    historyContainer.innerHTML = `<div class="muted">No trades yet.</div>`;
     return;
   }
 
@@ -71,21 +67,37 @@ async function loadTrades() {
           <div class="small">Date: ${dateTxt} • Risk: ${riskTxt}</div>
           ${t.notes ? `<div class="small">Notes: ${escapeHtml(t.notes)}</div>` : ""}
         </div>
+
         <div class="tradeActions">
           <button class="btn btn-ghost" data-del="${t.id}">Delete</button>
         </div>
       </div>
 
-      <div class="tradeImgs">
-        ${t.before_url ? `<img class="clickable" data-title="Before - ${escapeHtml(pairTxt)}" src="${t.before_url}" alt="Before">` : ""}
-        ${t.after_url ? `<img class="clickable" data-title="After - ${escapeHtml(pairTxt)}" src="${t.after_url}" alt="After">` : ""}
+      <div class="imgGrid">
+        <div class="imgBox">
+          <div class="imgLabel">Before</div>
+          ${
+            t.before_url
+              ? `<img class="thumb clickable" data-title="Before - ${escapeHtml(pairTxt)}" src="${t.before_url}" alt="Before">`
+              : `<div class="muted small">No image</div>`
+          }
+        </div>
+
+        <div class="imgBox">
+          <div class="imgLabel">After</div>
+          ${
+            t.after_url
+              ? `<img class="thumb clickable" data-title="After - ${escapeHtml(pairTxt)}" src="${t.after_url}" alt="After">`
+              : `<div class="muted small">No image</div>`
+          }
+        </div>
       </div>
     `;
 
     historyContainer.appendChild(card);
   });
 
-  // delete
+  // Delete handler
   historyContainer.querySelectorAll("[data-del]").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const id = btn.getAttribute("data-del");
@@ -94,14 +106,14 @@ async function loadTrades() {
       const { error } = await sb.from("trades").delete().eq("id", id);
       if (error) {
         console.error(error);
-        alert("Delete failed (RLS may block DELETE).");
+        alert("Delete failed.");
         return;
       }
       loadTrades();
     });
   });
 
-  // image click preview
+  // Image click preview
   historyContainer.querySelectorAll("img.clickable").forEach((img) => {
     img.style.cursor = "pointer";
     img.addEventListener("click", () => {
@@ -111,7 +123,7 @@ async function loadTrades() {
   });
 }
 
-refreshBtn?.addEventListener("click", loadTrades);
-
+refreshBtn.addEventListener("click", loadTrades);
 loadTrades();
+
 
