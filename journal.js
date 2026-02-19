@@ -133,6 +133,26 @@ form.addEventListener("submit", async (e)=>{
 previewFile(null, beforePreview);
 previewFile(null, afterPreview);
 
+async function uploadImage(file) {
+  if (!file) return null;
+
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+  const fileName = `${crypto.randomUUID()}.${ext}`;
+  const filePath = `trades/${fileName}`; // IMPORTANT: folder name
+
+  const { error: uploadError } = await sb.storage
+    .from("trade-images")
+    .upload(filePath, file, { upsert: false });
+
+  if (uploadError) {
+    console.error("Upload error:", uploadError);
+    return null;
+  }
+
+  const { data } = sb.storage.from("trade-images").getPublicUrl(filePath);
+  return data.publicUrl;
+}
+
 
 
 
