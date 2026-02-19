@@ -6,65 +6,67 @@ const modalImg = document.getElementById("modalImg");
 const modalTitle = document.getElementById("modalTitle");
 const closeModalBtn = document.getElementById("closeModalBtn");
 
-function escapeHtml(str) {
+function escapeHtml(str){
   return String(str || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
-function openModal(title, url) {
+function openModal(title, url){
   modalTitle.textContent = title || "Preview";
   modalImg.src = url;
   modal.classList.add("open");
 }
-
-function closeModal() {
+function closeModal(){
   modal.classList.remove("open");
   modalImg.src = "";
 }
 
 closeModalBtn.addEventListener("click", closeModal);
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) closeModal();
-});
+modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
 
-async function loadTrades() {
+async function loadTrades(){
   historyContainer.innerHTML = `<div class="muted">Loading...</div>`;
 
   const { data, error } = await sb
     .from("trades")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending:false });
 
-  if (error) {
+  if(error){
     console.error(error);
-    historyContainer.innerHTML = `<div class="muted">Failed to load trades.</div>`;
+    historyContainer.innerHTML = `<div class="muted">Failed to load history.</div>`;
     return;
   }
 
-  if (!data || data.length === 0) {
+  if(!data || data.length === 0){
     historyContainer.innerHTML = `<div class="muted">No trades yet.</div>`;
     return;
   }
 
   historyContainer.innerHTML = "";
 
-  data.forEach((t) => {
-    const pairTxt = t.pair || "-";
-    const dateTxt = t.date ? String(t.date) : "-";
-    const riskTxt = (t.risk ?? "") === "" ? "-" : `$${t.risk}`;
-
+  data.forEach(t=>{
     const card = document.createElement("div");
     card.className = "tradeCard";
 
     card.innerHTML = `
       <div class="tradeTop">
         <div class="tradeMeta">
-          <strong>${escapeHtml(pairTxt)}</strong>
-          <div class="small">Date: ${dateTxt} • Risk: ${riskTxt}</div>
+          <strong>${escapeHtml(t.pair || "-")}</strong>
+          <div class="small">
+            Date: ${t.date || "-"} • Bias: ${escapeHtml(t.htf_bias || "-")} • Result: ${escapeHtml(t.result || "-")}
+          </div>
+          <div class="small">
+            Risk: ${t.risk ?? "-"} • PnL: ${t.pnl ?? "-"} • RR: ${escapeHtml(t.rr || "-")}
+          </div>
+          ${t.poi ? `<div class="small">POI: ${escapeHtml(t.poi)}</div>` : ""}
+          ${t.inducement ? `<div class="small">Inducement: ${escapeHtml(t.inducement)}</div>` : ""}
+          ${t.sl ? `<div class="small">SL: ${escapeHtml(t.sl)}</div>` : ""}
+          ${t.tp ? `<div class="small">TP: ${escapeHtml(t.tp)}</div>` : ""}
           ${t.notes ? `<div class="small">Notes: ${escapeHtml(t.notes)}</div>` : ""}
         </div>
 
@@ -78,7 +80,7 @@ async function loadTrades() {
           <div class="imgLabel">Before</div>
           ${
             t.before_url
-              ? `<img class="thumb clickable" data-title="Before - ${escapeHtml(pairTxt)}" src="${t.before_url}" alt="Before">`
+              ? `<img class="thumb clickable" data-title="Before - ${escapeHtml(t.pair)}" src="${t.before_url}" alt="Before">`
               : `<div class="muted small">No image</div>`
           }
         </div>
@@ -87,7 +89,7 @@ async function loadTrades() {
           <div class="imgLabel">After</div>
           ${
             t.after_url
-              ? `<img class="thumb clickable" data-title="After - ${escapeHtml(pairTxt)}" src="${t.after_url}" alt="After">`
+              ? `<img class="thumb clickable" data-title="After - ${escapeHtml(t.pair)}" src="${t.after_url}" alt="After">`
               : `<div class="muted small">No image</div>`
           }
         </div>
@@ -97,33 +99,28 @@ async function loadTrades() {
     historyContainer.appendChild(card);
   });
 
-  // Delete handler
-  historyContainer.querySelectorAll("[data-del]").forEach((btn) => {
-    btn.addEventListener("click", async () => {
+  // delete
+  historyContainer.querySelectorAll("[data-del]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
       const id = btn.getAttribute("data-del");
-      if (!confirm("Delete this trade?")) return;
-
+      if(!confirm("Delete this trade?")) return;
       const { error } = await sb.from("trades").delete().eq("id", id);
-      if (error) {
-        console.error(error);
-        alert("Delete failed.");
-        return;
-      }
+      if(error){ console.error(error); alert("Delete failed."); return; }
       loadTrades();
     });
   });
 
-  // Image click preview
-  historyContainer.querySelectorAll("img.clickable").forEach((img) => {
-    img.style.cursor = "pointer";
-    img.addEventListener("click", () => {
-      const title = img.getAttribute("data-title") || "Preview";
-      openModal(title, img.src);
+  // click preview
+  historyContainer.querySelectorAll("img.clickable").forEach(img=>{
+    img.addEventListener("click", ()=>{
+      openModal(img.getAttribute("data-title") || "Preview", img.src);
     });
   });
 }
 
 refreshBtn.addEventListener("click", loadTrades);
 loadTrades();
+
+
 
 
