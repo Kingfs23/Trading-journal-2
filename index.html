@@ -3,89 +3,170 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KìñgFX Trading Journal</title>
+  <title>KìñgFX Journal</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">Kì</div>
-      <div>
-        <div class="title">KìñgFX Trading Journal</div>
-       
-      </div>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">Kì</div>
+    <div>
+      <div class="title">KìñgFX Trade Journal</div>
+      <div class="subtitle">Prop Firm Journal (Supabase)</div>
     </div>
+  </div>
 
-    <!-- TASKBAR / NAV -->
-    <nav class="nav">
-      <a class="navlink active" href="index.html">Journal</a>
-      <a class="navlink" href="history.html">History</a>
-      <button id="scrollToFormBtn" class="btn btn-primary">Add Trade</button>
-    </nav>
-  </header>
+  <nav class="nav">
+    <a class="navlink active" href="index.html">Journal</a>
+    <a class="navlink" href="history.html">History</a>
+    <button id="scrollToFormBtn" class="btn btn-primary">Add Trade</button>
+  </nav>
+</header>
 
-  <main class="container onecol">
-    <section class="card" id="formCard">
-      <h2>Add New Trade</h2>
+<main class="container onecol">
+  <section class="card" id="formCard">
+    <h2>New Trade</h2>
 
-      <form id="tradeForm" class="form">
-        <div class="row">
-          <div class="field">
-            <label for="date">Date</label>
-            <input id="date" type="date" required />
-          </div>
-          <div class="field">
-            <label for="pair">Pair</label>
-            <input id="pair" type="text" placeholder="XAUUSD / EURUSD" required />
-          </div>
+    <form id="tradeForm" class="form">
+      <!-- TRADE INFO -->
+      <div class="sectionTitle">Trade Info</div>
+
+      <div class="row">
+        <div class="field">
+          <label>Date</label>
+          <input id="date" type="date" required>
         </div>
-
-        <div class="row">
-          <div class="field">
-            <label for="risk">Risk ($)</label>
-            <input id="risk" type="number" step="0.01" min="0" placeholder="10" required />
-          </div>
-          <div class="field">
-            <label for="notes">Notes (optional)</label>
-            <input id="notes" type="text" placeholder="Setup, emotions, mistakes..." />
-          </div>
+        <div class="field">
+          <label>Pair</label>
+          <input id="pair" type="text" placeholder="USDJPY / XAUUSD" required>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="field">
-            <label for="beforeImg">Before Image</label>
-            <input id="beforeImg" type="file" accept="image/*" />
-            <div id="beforePreview" class="previewBox">
-              <span class="muted">No image selected</span>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="afterImg">After Image</label>
-            <input id="afterImg" type="file" accept="image/*" />
-            <div id="afterPreview" class="previewBox">
-              <span class="muted">No image selected</span>
-            </div>
-          </div>
+      <div class="row">
+        <div class="field">
+          <label>HTF Bias</label>
+          <select id="htf_bias">
+            <option value="Neutral">Neutral</option>
+            <option value="Bullish">Bullish</option>
+            <option value="Bearish">Bearish</option>
+          </select>
         </div>
-
-        <div class="actions">
-          <button type="submit" class="btn btn-primary" id="saveBtn">Save Trade</button>
-          <button type="button" class="btn btn-ghost" id="resetBtn">Reset</button>
-          <a class="btn btn-ghost" href="history.html">Go to History</a>
+        <div class="field">
+          <label>POI (4H/1H)</label>
+          <input id="poi" type="text" placeholder="e.g. 155.20 - 155.55">
         </div>
+      </div>
 
-        <div id="status" class="status"></div>
-      </form>
-    </section>
-  </main>
+      <div class="row">
+        <div class="field">
+          <label>Inducement</label>
+          <select id="inducement">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Risk ($)</label>
+          <input id="risk" type="number" step="0.01" min="0" placeholder="10" required>
+        </div>
+      </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js"></script>
-  <script src="journal.js"></script>
+      <div class="row">
+        <div class="field">
+          <label>Stop Loss (SL)</label>
+          <input id="sl" type="text" placeholder="e.g. 155.10">
+        </div>
+        <div class="field">
+          <label>Take Profit (TP)</label>
+          <input id="tp" type="text" placeholder="e.g. 156.30">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>R:R (ratio)</label>
+          <input id="rr" type="text" placeholder="e.g. 1:3">
+        </div>
+        <div class="field">
+          <label>PnL ($)</label>
+          <input id="pnl" type="number" step="0.01" placeholder="e.g. 35">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Result</label>
+          <select id="result" required>
+            <option value="">Select</option>
+            <option value="Win">Win</option>
+            <option value="Loss">Loss</option>
+            <option value="BE">BE</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Notes (optional)</label>
+          <input id="notes" type="text" placeholder="Any quick note">
+        </div>
+      </div>
+
+      <!-- IMAGES -->
+      <div class="sectionTitle">Trade Images</div>
+
+      <div class="row">
+        <div class="field">
+          <label>Before Image</label>
+          <input id="beforeImg" type="file" accept="image/*" />
+          <div id="beforePreview" class="previewBox"><span class="muted">No image selected</span></div>
+        </div>
+        <div class="field">
+          <label>After Image</label>
+          <input id="afterImg" type="file" accept="image/*" />
+          <div id="afterPreview" class="previewBox"><span class="muted">No image selected</span></div>
+        </div>
+      </div>
+
+      <!-- JOURNAL -->
+      <div class="sectionTitle">Journal</div>
+
+      <div class="field">
+        <label>Emotions (before/during/after)</label>
+        <textarea id="emotions" placeholder="How did you feel? What was happening mentally?"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Improvement (After Win)</label>
+          <textarea id="improve_win" placeholder="What went well? What to repeat?"></textarea>
+        </div>
+        <div class="field">
+          <label>Improvement (After Loss)</label>
+          <textarea id="improve_loss" placeholder="What to change next time?"></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Improvement (After BE)</label>
+        <textarea id="improve_be" placeholder="What caused BE? How to manage next time?"></textarea>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary">Save Trade</button>
+        <button type="button" class="btn btn-ghost" id="resetBtn">Reset</button>
+        <a class="btn btn-ghost" href="history.html">Go to History</a>
+      </div>
+
+      <div id="status" class="status"></div>
+    </form>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="journal.js"></script>
 </body>
 </html>
+
 
 
 
