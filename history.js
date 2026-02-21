@@ -24,19 +24,30 @@ const TABLE_NAME = "trades";
 const COLUMN_MAP = {
   id: ["id"],
   created_at: ["created_at", "date", "time"],
+
+  // Your table (make sure you actually have a pair column)
   pair: ["pair", "symbol", "market"],
-  bias: ["bias", "direction", "side", "type"],          // "BUY"/"SELL"
-  result: ["result", "outcome", "status"],             // "win"/"loss"/"be"
+
+  bias: ["bias", "direction", "side", "type", "htf_bias"],
+
+  // Your table uses these
+  result: ["result", "outcome", "status"],
   entry: ["entry", "entry_price"],
   sl: ["sl", "stop", "stop_loss"],
   tp: ["tp", "take_profit"],
-  r: ["r", "rr", "r_multiple", "rmultiple"],
-  profit: ["profit", "pnl", "net", "amount"],          // number
-  notes: ["notes", "comment", "model", "reason"],
-  before_img: ["before_img", "before", "before_url", "img_before"],
-  after_img: ["after_img", "after", "after_url", "img_after"],
-};
 
+  // IMPORTANT: your RR column is "rr"
+  r: ["rr", "r", "r_multiple", "rmultiple"],
+
+  // IMPORTANT: your profit column is "pnl"
+  profit: ["pnl", "profit", "net", "amount"],
+
+  notes: ["notes", "comment", "model", "reason", "emotions"],
+
+  // IMPORTANT: your image columns are before_url / after_url
+  before_img: ["before_url", "before_img", "before", "before_url", "img_before"],
+  after_img: ["after_url", "after_img", "after", "after_url", "img_after"],
+};
 let allTrades = [];
 let chart;
 
