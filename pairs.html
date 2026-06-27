@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KingFX Pair Performance</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="pairs">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">K</div>
+      <div>
+        <div class="title">Pair Performance</div>
+        <div class="subtitle">Best markets, weak spots, and execution quality</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a class="navlink" href="index.html">Journal</a>
+      <a class="navlink" href="history.html">History</a>
+      <a class="navlink" href="monthly.html">Monthly</a>
+      <a class="navlink active" href="pairs.html">Pairs</a>
+      <button id="refreshBtn" class="btn btn-ghost">Refresh</button>
+    </nav>
+  </header>
+
+  <main class="container analyticsPage">
+    <section class="statsGrid extendedStats">
+      <article class="statCard">
+        <span>Total Trades</span>
+        <strong id="kpiTrades">0</strong>
+      </article>
+      <article class="statCard">
+        <span>Win Rate</span>
+        <strong id="kpiWinRate">0%</strong>
+      </article>
+      <article class="statCard">
+        <span>Net Profit</span>
+        <strong id="kpiProfit">$0.00</strong>
+      </article>
+      <article class="statCard">
+        <span>Average R</span>
+        <strong id="kpiAvgR">0.00R</strong>
+      </article>
+      <article class="statCard">
+        <span>Profit Factor</span>
+        <strong id="kpiProfitFactor">0.00</strong>
+      </article>
+      <article class="statCard">
+        <span>Max Drawdown</span>
+        <strong id="kpiDrawdown">$0.00</strong>
+      </article>
+    </section>
+
+    <section class="historyTools">
+      <label class="field">
+        <span>Search</span>
+        <input id="searchInput" placeholder="Pair, setup, mistake..." />
+      </label>
+      <label class="field">
+        <span>Result</span>
+        <select id="resultFilter">
+          <option value="">All results</option>
+          <option value="win">Win</option>
+          <option value="loss">Loss</option>
+          <option value="be">Break Even</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Month</span>
+        <select id="monthFilter">
+          <option value="">All months</option>
+        </select>
+      </label>
+      <button id="exportBtn" class="btn btn-primary">Export CSV</button>
+    </section>
+
+    <section class="analysisLayout">
+      <div>
+        <div class="sectionLine">
+          <h1>Pair Performance</h1>
+          <span id="lastUpdated"></span>
+        </div>
+        <div id="analysisContainer" class="analysisList">
+          <div class="emptyState">Loading pair stats...</div>
+        </div>
+      </div>
+
+      <aside class="insightPanel">
+        <div class="sectionLine">
+          <h2>Analysis</h2>
+          <span id="tradeCountLabel">0 trades</span>
+        </div>
+        <div id="insightPanel" class="insightList"></div>
+      </aside>
+    </section>
+  </main>
+
+  <script id="supabaseLibrary" async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="document-trades.js"></script>
+  <script src="analytics.js"></script>
+</body>
+</html>
